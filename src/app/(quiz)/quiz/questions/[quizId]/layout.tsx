@@ -10,7 +10,7 @@ import {
   ReactNode
 } from "react";
 import { useRouter, useParams } from "next/navigation";
-import api from "../../../../services/api"; 
+import api from "../../../../services/api";
 
 // --- Define Types ---
 type Question = {
@@ -42,7 +42,7 @@ interface QuizContextType {
   onSubmitQuiz: (force: boolean) => void;
   onCloseSubmitWarning: () => void;
   onReEnterFullscreen: () => void;
-  mainWrapperRef: React.RefObject<HTMLDivElement | null >; // <-- made non-nullable
+  mainWrapperRef: React.RefObject<HTMLDivElement | null>; // <-- made non-nullable
 }
 
 // --- Create Context ---
@@ -73,7 +73,7 @@ export default function QuizLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const params = useParams();
   const { quizId } = params;
-  
+
   // This ref is created here and passed via context to the UI
   const mainWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -274,20 +274,6 @@ export default function QuizLayout({ children }: { children: ReactNode }) {
       if (document.hidden) setTabSwitchViolations((p) => p + 1);
     };
 
-    // --- Add this new useEffect to watch for tab switch violations ---
-useEffect(() => {
-  if (tabSwitchViolations >= 5) {
-    // Check if the quiz isn't already terminated
-    if (isQuizTerminated) return;
-
-    setIsQuizTerminated(true);
-    handleSubmitQuizRef.current(
-      true,
-      "Quiz terminated due to excessive tab switching."
-    );
-  }
-}, [tabSwitchViolations, isQuizTerminated]); // Run this check whenever 'tabSwitchViolations' changes
-
     const handleFullscreenChange = () => {
       if (!document.fullscreenElement) {
         setFullscreenExitCount((count) => {
@@ -319,12 +305,28 @@ useEffect(() => {
     document.addEventListener("contextmenu", preventContextMenu);
     return () => document.removeEventListener("contextmenu", preventContextMenu);
   }, []);
-  
+
+  // --- Add this new useEffect to watch for tab switch violations ---
+  useEffect(() => {
+    if (tabSwitchViolations >= 5) {
+      // Check if the quiz isn't already terminated
+      if (isQuizTerminated) return;
+
+      setIsQuizTerminated(true);
+      handleSubmitQuizRef.current(
+        true,
+        "Quiz terminated due to excessive tab switching."
+      );
+    }
+  }, [tabSwitchViolations, isQuizTerminated]); // Run this check whenever 'tabSwitchViolations' changes
+
+
+
   // --- Event Handlers to pass via Context ---
-  
+
   const onSelectOption = (qId: string, option: string) =>
     setAnswers((p) => ({ ...p, [qId]: option }));
-    
+
   const onToggleBookmark = (qId: string) =>
     setBookmarked((p) => ({ ...p, [qId]: !p[qId] }));
 
@@ -332,20 +334,20 @@ useEffect(() => {
     if (currentQuestionIndex < questions.length - 1)
       setCurrentQuestionIndex((p) => p + 1);
   };
-  
+
   const onPrevious = () => {
     if (currentQuestionIndex > 0)
       setCurrentQuestionIndex((p) => p + 1);
   };
-  
+
   const onNavigateToQuestion = (index: number) => {
     setCurrentQuestionIndex(index);
   };
-  
+
   const onCloseSubmitWarning = () => {
     setShowSubmitWarning(false);
   };
-  
+
   const onReEnterFullscreen = () => {
     enterFullscreen();
     setFullscreenWarning(null);

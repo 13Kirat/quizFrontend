@@ -6,26 +6,26 @@ import api from "../../../../services/api";
 
 export default function ReadyPage() {
   const router = useRouter();
-  const [isServerReady, setIsServerReady] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isServerReady, setIsServerReady] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const checkServerStatus = async () => {
-      try {
-        const response = await api.get("/status");
-        if (response.data?.data?.status === "running") {
-          setIsServerReady(true);
-        } else {
-          setError("The quiz server is not ready yet.");
-        }
-      } catch (err) {
-        setError("Could not connect to the server.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkServerStatus();
+    // const checkServerStatus = async () => {
+    //   try {
+    //     const response = await api.get("/status");
+    //     if (response.data?.data?.status === "running") {
+    //       setIsServerReady(true);
+    //     } else {
+    //       setError("The quiz server is not ready yet.");
+    //     }
+    //   } catch (err) {
+    //     setError("Could not connect to the server.");
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    // checkServerStatus();
   }, []);
 
   const handleStartQuiz = () => {

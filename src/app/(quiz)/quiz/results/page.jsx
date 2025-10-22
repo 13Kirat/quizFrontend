@@ -5,7 +5,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 export default function ResultsPage() {
     const [resultsData, setResultsData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [countdown, setCountdown] = useState(5);
+    const [countdown, setCountdown] = useState(30);
     const { logout } = useAuth();
 
     // Fetch results data from sessionStorage when the component mounts

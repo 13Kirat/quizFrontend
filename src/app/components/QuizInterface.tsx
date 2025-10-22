@@ -106,7 +106,7 @@ export default function QuizInterface({
   onReEnterFullscreen,
   mainWrapperRef,
 }: QuizInterfaceProps) {
-  
+
   // --- Conditional UI Renders ---
 
   if (loading && questions.length === 0) {
@@ -260,7 +260,7 @@ export default function QuizInterface({
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* Question Area */}
         <div className="lg:col-span-2 bg-white p-6 sm:p-8 rounded-xl shadow-sm border">
           <div className="flex justify-between items-start mb-6">
@@ -274,11 +274,10 @@ export default function QuizInterface({
             </div>
             <button
               onClick={() => onToggleBookmark(currentQuestion._id)} // Use prop handler
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
-                bookmarked[currentQuestion._id]
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${bookmarked[currentQuestion._id]
                   ? "text-yellow-700 bg-yellow-100"
                   : "text-gray-600 bg-gray-100"
-              }`}
+                }`}
             >
               <BookmarkIcon filled={bookmarked[currentQuestion._id]} />{" "}
               {bookmarked[currentQuestion._id] ? "Bookmarked" : "Bookmark"}
@@ -289,11 +288,10 @@ export default function QuizInterface({
             {currentQuestion.options.map((option) => (
               <label
                 key={option.id}
-                className={`flex items-center p-4 border-2 rounded-lg cursor-pointer ${
-                  answers[currentQuestion._id] === option.optionText
+                className={`flex items-center p-4 border-2 rounded-lg cursor-pointer ${answers[currentQuestion._id] === option.optionText
                     ? "border-blue-500 bg-blue-50"
                     : "border-gray-200"
-                }`}
+                  }`}
               >
                 <input
                   type="radio"
@@ -325,7 +323,7 @@ export default function QuizInterface({
               disabled={currentQuestionIndex === questions.length - 1}
               className="px-8 py-2 rounded-lg bg-blue-600 text-white font-semibold disabled:opacity-50"
             >
-              Next
+              {currentQuestionIndex === questions.length - 1 ? "You can Submit Now" : "Next"}
             </button>
           </div>
         </div>
